@@ -58,7 +58,7 @@ protected:
     float SuctionRadius = 3 * 1024.f;
 
 	UPROPERTY(BlueprintReadWrite, Category="Gameplay")
-    float SuctionStrength = 3 * -FMath::Pow(10, 6.3f);
+    float SuctionStrength = 3 * -FMath::Pow(10, 6.5f);
 
 
 private:
