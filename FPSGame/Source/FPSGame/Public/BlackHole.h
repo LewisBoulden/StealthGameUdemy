@@ -11,13 +11,13 @@ class UStaticMeshComponent;
 class USphereComponent;
 
 UCLASS()
-class FPSGAME_API ABlackHole : public AActor
+class FPSGAME_API ABlackHole final : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ABlackHole();
+	explicit ABlackHole();
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
