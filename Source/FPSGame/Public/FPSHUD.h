@@ -13,17 +13,17 @@ class AFPSHUD : public AHUD
 {
 	GENERATED_BODY()
 
-protected:
-
-	/** Crosshair asset pointer */
-	UTexture2D* CrosshairTex;
-
 public:
 
 	AFPSHUD();
 
 	/** Primary draw call for the HUD */
 	virtual void DrawHUD() override;
+
+protected:
+
+	/** Crosshair asset pointer */
+	UTexture2D* CrosshairTex;
 
 };
 

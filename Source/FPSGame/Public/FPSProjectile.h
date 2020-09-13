@@ -16,16 +16,6 @@ class AFPSProjectile : public AActor
 {
 	GENERATED_BODY()
 
-protected:
-
-	/** Sphere collision component */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Projectile")
-	USphereComponent* CollisionComp;
-
-	/** Projectile movement component */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
-	UProjectileMovementComponent* ProjectileMovement;
-
 public:
 
 	AFPSProjectile();
@@ -39,5 +29,15 @@ public:
 
 	/** Returns ProjectileMovement subobject **/
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
+
+protected:
+
+    /** Sphere collision component */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile")
+        USphereComponent* CollisionComp;
+
+    /** Projectile movement component */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
+        UProjectileMovementComponent* ProjectileMovement;
 };
 

@@ -19,34 +19,15 @@ class AFPSCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-protected:
-
-	/** Pawn mesh: 1st person view  */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Mesh")
-	USkeletalMeshComponent* Mesh1PComponent;
-
-	/** Gun mesh: 1st person view (seen only by self) */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
-	USkeletalMeshComponent* GunMeshComponent;
-
-	/** First person camera */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
-	UCameraComponent* CameraComponent;
 
 public:
-	AFPSCharacter();
+    AFPSCharacter();
 
-	/** Projectile class to spawn */
-	UPROPERTY(EditDefaultsOnly, Category="Projectile")
-	TSubclassOf<AFPSProjectile> ProjectileClass;
+	/** Returns Mesh1P subobject **/
+	USkeletalMeshComponent* GetMesh1P() const { return Mesh1PComponent; }
 
-	/** Sound to play each time we fire */
-	UPROPERTY(EditDefaultsOnly, Category="Gameplay")
-	USoundBase* FireSound;
-
-	/** AnimMontage to play each time we fire */
-	UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
-	UAnimSequence* FireAnimation;
+	/** Returns FirstPersonCameraComponent subobject **/
+	UCameraComponent* GetFirstPersonCameraComponent() const { return CameraComponent; }
 
 protected:
 	
@@ -61,12 +42,36 @@ protected:
 
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 
+
 public:
-	/** Returns Mesh1P subobject **/
-	USkeletalMeshComponent* GetMesh1P() const { return Mesh1PComponent; }
+    /** Projectile class to spawn */
+    UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+    TSubclassOf<AFPSProjectile> ProjectileClass;
 
-	/** Returns FirstPersonCameraComponent subobject **/
-	UCameraComponent* GetFirstPersonCameraComponent() const { return CameraComponent; }
+    /** Sound to play each time we fire */
+    UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
+    USoundBase* FireSound;
 
+    /** AnimMontage to play each time we fire */
+    UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
+    UAnimSequence* FireAnimation;
+    
+    /** Flag for if the player is holding the objective Actor */
+    UPROPERTY(BlueprintReadOnly, Category = "Gameplay")
+    bool bIsHoldingObjective;
+
+protected:
+
+    /** Pawn mesh: 1st person view  */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
+    USkeletalMeshComponent* Mesh1PComponent;
+
+    /** Gun mesh: 1st person view (seen only by self) */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
+    USkeletalMeshComponent* GunMeshComponent;
+
+    /** First person camera */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+    UCameraComponent* CameraComponent;
 };
 
