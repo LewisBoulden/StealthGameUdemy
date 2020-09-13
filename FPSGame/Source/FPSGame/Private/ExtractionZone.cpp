@@ -2,8 +2,11 @@
 
 
 #include "ExtractionZone.h"
+#include "FPSCharacter.h"
+#include "FPSGameMode.h"
 #include "Components/BoxComponent.h"
-
+#include "Components/DecalComponent.h"
+#include "Engine/World.h"
 
 
 // Sets default values
@@ -21,6 +24,10 @@ AExtractionZone::AExtractionZone()
 
 	//Temp till there's a mesh or effect is added.
 	OverlapComp->SetHiddenInGame(false); //Shows the bounds of the componenet
+
+	ExtractionDecalComp = CreateDefaultSubobject<UDecalComponent>(TEXT("ExtractionDecalComp"));
+	ExtractionDecalComp->DecalSize = OverlapComp->GetScaledBoxExtent();
+	ExtractionDecalComp->SetupAttachment(OverlapComp);
 }
 
 
@@ -36,4 +43,15 @@ void AExtractionZone::BeginPlay()
 void AExtractionZone::HandleExtractionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	UE_LOG(LogTemp, Log, TEXT("Extraction Zone was overlapped"));
+
+	auto OverlappingPlayer = Cast<AFPSCharacter>(OtherActor);
+	if (OverlappingPlayer != nullptr && OverlappingPlayer->bIsHoldingObjective)
+	{
+		//This code will not work on a server/client setup
+		auto GameMode = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
+		if (GameMode != nullptr)
+		{
+			GameMode->CompleteMission(OverlappingPlayer);
+		}
+	}
 }

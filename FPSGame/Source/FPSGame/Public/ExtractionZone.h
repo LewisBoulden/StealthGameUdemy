@@ -7,6 +7,7 @@
 #include "ExtractionZone.generated.h"
 
 class UBoxComponent;
+class UDecalComponent;
 
 UCLASS()
 class FPSGAME_API AExtractionZone final : public AActor
@@ -33,5 +34,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category="Componenets")
 	UBoxComponent* OverlapComp;
-
+	
+	UPROPERTY(VisibleAnywhere, Category="Componenets")
+	UDecalComponent* ExtractionDecalComp;
 };

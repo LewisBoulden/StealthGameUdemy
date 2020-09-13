@@ -14,3 +14,16 @@ AFPSGameMode::AFPSGameMode()
 	// use our custom HUD class
 	HUDClass = AFPSHUD::StaticClass();
 }
+
+void AFPSGameMode::CompleteMission(APawn* InstigatorPawn)
+{
+	if (InstigatorPawn != nullptr)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Succesfully Extracted Item"));
+
+		//This is not great as we are just assuming the first player controller is set but fine for now.
+		InstigatorPawn->DisableInput(GetWorld()->GetFirstPlayerController());
+	}
+
+	OnMissionCompleted(InstigatorPawn);
+}
