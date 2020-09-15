@@ -44,26 +44,23 @@ void AExtractionZone::BeginPlay()
 
 void AExtractionZone::HandleExtractionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	UE_LOG(LogTemp, Log, TEXT("Extraction Zone was overlapped"));
 
 	auto OverlappingPlayer = Cast<AFPSCharacter>(OtherActor);
 	if (OverlappingPlayer != nullptr)
 	{
-		return;
-	}
-
-	if (OverlappingPlayer->bIsHoldingObjective)
-	{
-		UE_LOG(LogTemp, Log, TEXT("Extraction Zone was overlapped"));
-
-		//This code will not work on a server/client setup
-		auto GameMode = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
-		if (GameMode != nullptr)
+		if (OverlappingPlayer->bIsHoldingObjective)
 		{
-			GameMode->CompleteMission(OverlappingPlayer);
+			//This code will not work on a server/client setup
+			auto GameMode = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
+			if (GameMode != nullptr)
+			{
+				GameMode->CompleteMission(OverlappingPlayer);
+			}
 		}
-	}
-	else
-	{
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ObjectiveMissingSound, this->GetActorLocation());
+		else
+		{
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), ObjectiveMissingSound, this->GetActorLocation());
+		}
 	}
 }

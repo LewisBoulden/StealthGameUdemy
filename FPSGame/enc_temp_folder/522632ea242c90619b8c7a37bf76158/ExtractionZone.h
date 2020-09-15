@@ -39,6 +39,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category="Componenets")
 	UDecalComponent* ExtractionDecalComp;
 
-	UPROPERTY(EditAnywhere, Category="Sounds")
+	UPROPERTY(VisibleAnywhere, Category="Sounds")
 	USoundBase* ObjectiveMissingSound;
 };
