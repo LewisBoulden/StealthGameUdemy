@@ -3,6 +3,7 @@
 #include "FPSGameMode.h"
 #include "FPSHUD.h"
 #include "FPSCharacter.h"
+#include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 
 AFPSGameMode::AFPSGameMode()
@@ -17,12 +18,36 @@ AFPSGameMode::AFPSGameMode()
 
 void AFPSGameMode::CompleteMission(APawn* InstigatorPawn)
 {
-	if (InstigatorPawn != nullptr)
+	if (InstigatorPawn == nullptr)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Succesfully Extracted Item"));
+		return;
+	}
 
-		//This is not great as we are just assuming the first player controller is set but fine for now.
-		InstigatorPawn->DisableInput(GetWorld()->GetFirstPlayerController());
+	UE_LOG(LogTemp, Log, TEXT("Succesfully Extracted Item"));
+
+	//This is not great as we are just assuming the first player controller is set but fine for now.
+	InstigatorPawn->DisableInput(GetWorld()->GetFirstPlayerController());
+
+	//If the spectator viewport was set then we change the viewport to the spectator camera view
+	if (SpectatingViewpointClass != nullptr)
+	{
+		auto PlayerController = Cast<APlayerController>(InstigatorPawn->GetController());
+		if (PlayerController != nullptr)
+		{
+			//TODO jth: all this is totally hackey as it's making assumptions about the actor we want being the first instance
+			TArray<AActor*> ReturnedActors;
+			UGameplayStatics::GetAllActorsOfClass(this, SpectatingViewpointClass, ReturnedActors);
+
+			if (ReturnedActors.Num() > 0)
+			{
+				auto NewViewTarget = ReturnedActors[0];
+				PlayerController->SetViewTargetWithBlend(NewViewTarget, 0.5f, EViewTargetBlendFunction::VTBlend_EaseIn, 0.2f);
+			}
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("SpectatingViewpointClass is nullptr. Please update GameMode Blueprint with valid subclass. Cannot change spectating  view target."));
 	}
 
 	OnMissionCompleted(InstigatorPawn);

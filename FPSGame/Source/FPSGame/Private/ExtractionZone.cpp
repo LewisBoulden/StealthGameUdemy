@@ -46,7 +46,7 @@ void AExtractionZone::HandleExtractionOverlap(UPrimitiveComponent* OverlappedCom
 {
 
 	auto OverlappingPlayer = Cast<AFPSCharacter>(OtherActor);
-	if (OverlappingPlayer != nullptr)
+	if (OverlappingPlayer == nullptr)
 	{
 		return;
 	}
