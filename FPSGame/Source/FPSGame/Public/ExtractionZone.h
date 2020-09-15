@@ -33,10 +33,10 @@ private:
 
 protected:
 
-	UPROPERTY(VisibleAnywhere, Category="Componenets")
+	UPROPERTY(VisibleAnywhere, Category="Components")
 	UBoxComponent* OverlapComp;
 	
-	UPROPERTY(VisibleAnywhere, Category="Componenets")
+	UPROPERTY(VisibleAnywhere, Category="Components")
 	UDecalComponent* ExtractionDecalComp;
 
 	UPROPERTY(EditAnywhere, Category="Sounds")
