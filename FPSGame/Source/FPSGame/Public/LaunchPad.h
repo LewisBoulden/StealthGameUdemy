@@ -36,11 +36,20 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category="Components")
 	UStaticMeshComponent* MeshComponent;
-
+	
+	UPROPERTY(VisibleAnywhere, Category="Components")
+	UStaticMeshComponent* ArrowMeshComponent;
+	
     UPROPERTY(VisibleAnywhere, Category="Components")
     UBoxComponent* OverlapComp;
 
-    UPROPERTY(BlueprintReadWrite, Category="Gameplay")
-    FVector LaunchVelocity = FVector(20.f, 0.f, 20.f);
+    UPROPERTY(EditDefaultsOnly, Category="Components")
+	UParticleSystem* LaunchPadEffect;
+
+	UPROPERTY(EditInstanceOnly, Category="Gameplay")
+	float LaunchStrength = 1500.f;
+	
+    UPROPERTY(EditInstanceOnly, Category="Gameplay")
+    float LaunchPitchAngle = 35.f;
 
 };

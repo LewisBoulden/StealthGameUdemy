@@ -5,6 +5,7 @@
 #include "FPSCharacter.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -13,15 +14,15 @@ ALaunchPad::ALaunchPad()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
-	MeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	MeshComponent->SetRelativeScale3D(FVector(200.f, 200.f, 50.f));
-	RootComponent = MeshComponent;
-
 	OverlapComp = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxOverlapComp"));
-	OverlapComp->SetBoxExtent(FVector(200.f, 200.f, 200.f));
-	OverlapComp->SetupAttachment(RootComponent);
+	OverlapComp->SetBoxExtent(FVector(75.f, 75.f, 50.f));
+	RootComponent = OverlapComp;
+	
+	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
+	MeshComponent->SetupAttachment(RootComponent);
 
+	ArrowMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArrowMeshComponent"));
+	ArrowMeshComponent->SetupAttachment(RootComponent);
 }
 
 
@@ -38,12 +39,32 @@ void ALaunchPad::BeginPlay()
 {
 	Super::BeginPlay();
 
-	OverlapComp->OnComponentBeginOverlap.AddDynamic(this, &ALaunchPad::HandleLaunchOverlappingActor);
+	if (OverlapComp == nullptr)
+	{
+		UE_LOG(LogActor, Error, TEXT("Overlap Component not set on the LaunchPad."));
+	}
 	
+	if (MeshComponent == nullptr)
+	{
+		UE_LOG(LogActor, Error, TEXT("Static Mesh Component not set on the LaunchPad."));
+	}
+	
+	if (ArrowMeshComponent == nullptr)
+	{
+		UE_LOG(LogActor, Error, TEXT("Static Arrow Mesh Component not set on the LaunchPad."));
+	}
+	
+	OverlapComp->OnComponentBeginOverlap.AddDynamic(this, &ALaunchPad::HandleLaunchOverlappingActor);
 }
 
-void ALaunchPad::HandleLaunchOverlappingActor(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ALaunchPad::HandleLaunchOverlappingActor(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	
+	auto LaunchDirection = GetActorRotation();
+	LaunchDirection.Pitch += LaunchPitchAngle;
+	const auto LaunchVelocity = LaunchDirection.Vector() * LaunchStrength;
+	
 	if (OtherActor != nullptr)
 	{
 		//do the work here to launch the player and the blue boxes.
@@ -57,8 +78,16 @@ void ALaunchPad::HandleLaunchOverlappingActor(UPrimitiveComponent* OverlappedCom
 
 		//This is currently not launching the player as expected
 		OverlappingPlayer->LaunchCharacter(LaunchVelocity, false, false);
+
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), LaunchPadEffect, GetActorLocation());
 	}
 
-	//todo jth: do the work to launch the boxes
+	if (OtherComp && OtherComp->IsSimulatingPhysics())
+	{
+		//This is currently not launching the player as expected
+		OtherComp->AddImpulse(LaunchVelocity, NAME_None, true);
+
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), LaunchPadEffect, GetActorLocation());
+	}
 }
 
