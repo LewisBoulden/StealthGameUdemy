@@ -2,8 +2,12 @@
 
 
 #include "AIGuard.h"
+
+#include <stdbool.h>
+
 #include "Perception/PawnSensingComponent.h"
 #include "DrawDebugHelpers.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
 // Sets default values
@@ -31,17 +35,29 @@ void AAIGuard::BeginPlay()
 	Super::BeginPlay();
 
 	GuardSensingComp->OnSeePawn.AddDynamic(this, &AAIGuard::HandleSeePlayer);
+	GuardSensingComp->OnHearNoise.AddDynamic(this, &AAIGuard::HandleHearNoise);
 }
 
 
 void AAIGuard::HandleSeePlayer(APawn* PawnInstigator)
 {
-	if (PawnInstigator != nullptr)
+	if (PawnInstigator == nullptr)
 	{
-		//Some debug code to display where the player was seen by AI
-		DrawDebugSphere(GetWorld(), PawnInstigator->GetActorLocation(), 32.f, 12, FColor::Purple, false, 10);
-		
-		
+		return;
 	}
+
+	UE_LOG(LogActor, Warning, TEXT("AI Guard saw the %s"), *PawnInstigator->GetName());
+		
+	//Some debug code to display where the player was seen by AI
+	DrawDebugSphere(GetWorld(), PawnInstigator->GetActorLocation(), 32.f, 12, FColor::Purple, false, 10);
+		
+}
+
+void AAIGuard::HandleHearNoise(APawn* PawnInstigator, const FVector& Location, float Volume)
+{
+	UE_LOG(LogActor, Warning, TEXT("AI Guard heard the %s"), *PawnInstigator->GetName());
+
+	//Some debug code to just see that the AI guard is able to hear the player
+	DrawDebugSphere(GetWorld(), Location, 32.f, 12, FColor::Red, false, 10);
 }
 

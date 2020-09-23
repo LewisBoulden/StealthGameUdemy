@@ -13,6 +13,7 @@ class AFPSProjectile;
 class USoundBase;
 class UAnimSequence;
 class UParticleSystem;
+class UPawnNoiseEmitterComponent;
 
 
 UCLASS()
@@ -23,6 +24,10 @@ class AFPSCharacter : public ACharacter
 
 public:
     AFPSCharacter();
+
+		
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 	/** Returns Mesh1P subobject **/
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1PComponent; }
@@ -74,5 +79,9 @@ protected:
     /** First person camera */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
     UCameraComponent* CameraComponent;
+
+	/** Sound emitter producing sound from the player projectile */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+    UPawnNoiseEmitterComponent* NoiseEmitterComponent;
 };
 

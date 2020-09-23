@@ -29,6 +29,9 @@ protected:
 	UFUNCTION()
 	void HandleSeePlayer(APawn* PawnInstigator);
 	
+	UFUNCTION()
+	void HandleHearNoise(APawn* PawnInstigator, const FVector& Location, float Volume);
+	
 protected:
 	
 	UPROPERTY(VisibleAnywhere, Category="Components")

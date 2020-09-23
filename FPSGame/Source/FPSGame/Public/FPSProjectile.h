@@ -31,13 +31,17 @@ public:
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 
 protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+	
+protected:
 
     /** Sphere collision component */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile")
-        USphereComponent* CollisionComp;
+    USphereComponent* CollisionComp;
 
     /** Projectile movement component */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
-        UProjectileMovementComponent* ProjectileMovement;
+    UProjectileMovementComponent* ProjectileMovement;
 };
 
