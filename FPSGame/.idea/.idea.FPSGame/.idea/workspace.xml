@@ -24,6 +24,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2a35bcc1-254a-4578-b166-c16cd3eef2da" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/BP_Guard.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/FPSGame/Private/AIGuard.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/FPSGame/Public/AIGuard.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FPSGame/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FPSGame/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FPSGame/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FPSGame/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Maps/FirstPersonExampleMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/FirstPersonExampleMap.umap" afterDir="false" />
@@ -290,7 +293,7 @@
       <workItem from="1600444471693" duration="15747000" />
       <workItem from="1600811109200" duration="1265000" />
       <workItem from="1600813388851" duration="1234000" />
-      <workItem from="1600822453431" duration="3196000" />
+      <workItem from="1600822453431" duration="3889000" />
     </task>
     <servers />
   </component>
@@ -399,25 +402,14 @@
       <screen x="0" y="0" width="2751" height="1547" />
     </state>
     <state x="885" y="439" width="1167" height="709" key="SettingsEditor/0.0.2751.1547@0.0.2751.1547" timestamp="1600540831350" />
-    <state x="1059" y="527" width="738" height="534" key="find.popup" timestamp="1600825874440">
+    <state x="1059" y="527" width="738" height="534" key="find.popup" timestamp="1600826380556">
       <screen x="0" y="41" width="2751" height="1506" />
     </state>
-    <state x="1059" y="527" width="738" height="534" key="find.popup/0.41.2751.1506@0.41.2751.1506" timestamp="1600825874440" />
-    <state x="1038" y="351" width="672" height="697" key="search.everywhere.popup" timestamp="1600535371106">
-      <screen x="0" y="0" width="2751" height="1547" />
+    <state x="1059" y="527" width="738" height="534" key="find.popup/0.41.2751.1506@0.41.2751.1506" timestamp="1600826380556" />
+    <state x="1038" y="383" width="672" height="678" key="search.everywhere.popup" timestamp="1600826583321">
+      <screen x="0" y="41" width="2751" height="1506" />
     </state>
     <state x="1038" y="351" width="672" height="697" key="search.everywhere.popup/0.0.2751.1547@0.0.2751.1547" timestamp="1600535371106" />
-    <state x="1038" y="383" width="672" height="678" key="search.everywhere.popup/0.41.2751.1506@0.41.2751.1506" timestamp="1600444799115" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Source/FPSGame/Private/AIGuard.cpp</url>
-          <line>39</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <state x="1038" y="383" width="672" height="678" key="search.everywhere.popup/0.41.2751.1506@0.41.2751.1506" timestamp="1600826583321" />
   </component>
 </project>

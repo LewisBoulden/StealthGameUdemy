@@ -3,6 +3,7 @@
 
 #include "AIGuard.h"
 #include "Perception/PawnSensingComponent.h"
+#include "DrawDebugHelpers.h"
 
 
 // Sets default values
@@ -37,7 +38,10 @@ void AAIGuard::HandleSeePlayer(APawn* PawnInstigator)
 {
 	if (PawnInstigator != nullptr)
 	{
-		UE_LOG(LogActorComponent, Warning, TEXT("The guard has seen the moving %s player"), *PawnInstigator->GetName());
+		//Some debug code to display where the player was seen by AI
+		DrawDebugSphere(GetWorld(), PawnInstigator->GetActorLocation(), 32.f, 12, FColor::Purple, false, 10);
+		
+		
 	}
 }
 
