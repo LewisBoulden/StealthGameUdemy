@@ -26,15 +26,24 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+private:
+
 	UFUNCTION()
 	void HandleSeePlayer(APawn* PawnInstigator);
 	
 	UFUNCTION()
 	void HandleHearNoise(APawn* PawnInstigator, const FVector& Location, float Volume);
+
+	UFUNCTION()
+	void ResetGuardRotation();
 	
 protected:
 	
 	UPROPERTY(VisibleAnywhere, Category="Components")
 	UPawnSensingComponent* GuardSensingComp;
 
+private:
+	FRotator OriginRotation;
+
+	FTimerHandle TimerHandle_ResetOrientation;
 };

@@ -7,6 +7,7 @@
 
 #include "Perception/PawnSensingComponent.h"
 #include "DrawDebugHelpers.h"
+#include "FPSGameMode.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 
@@ -20,6 +21,7 @@ AAIGuard::AAIGuard()
 	GuardSensingComp->bHearNoises = true;
 	GuardSensingComp->bSeePawns = true;
 	GuardSensingComp->bOnlySensePlayers = true;
+
 }
 
 // Called every frame
@@ -34,6 +36,10 @@ void AAIGuard::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//The rotation to return to after the timer has expired
+	OriginRotation = GetActorRotation();
+
+	//Bind up the sensing callbacks
 	GuardSensingComp->OnSeePawn.AddDynamic(this, &AAIGuard::HandleSeePlayer);
 	GuardSensingComp->OnHearNoise.AddDynamic(this, &AAIGuard::HandleHearNoise);
 }
@@ -50,14 +56,31 @@ void AAIGuard::HandleSeePlayer(APawn* PawnInstigator)
 		
 	//Some debug code to display where the player was seen by AI
 	DrawDebugSphere(GetWorld(), PawnInstigator->GetActorLocation(), 32.f, 12, FColor::Purple, false, 10);
-		
+
+	auto GameMode = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
+	if (GameMode != nullptr)
+	{
+		GameMode->CompleteMission(PawnInstigator, GameCompletionState::Failed);	
+	}
 }
 
 void AAIGuard::HandleHearNoise(APawn* PawnInstigator, const FVector& Location, float Volume)
 {
-	UE_LOG(LogActor, Warning, TEXT("AI Guard heard the %s"), *PawnInstigator->GetName());
+	auto Direction = Location - GetActorLocation();
+	Direction.Normalize();
+	
+	auto NewLookAtLocation = FRotationMatrix::MakeFromX(Direction).Rotator();
+	NewLookAtLocation.Pitch = 0.0f;
+	NewLookAtLocation.Roll = 0.0f;
+	
+	SetActorRotation(NewLookAtLocation);
 
-	//Some debug code to just see that the AI guard is able to hear the player
-	DrawDebugSphere(GetWorld(), Location, 32.f, 12, FColor::Red, false, 10);
+	GetWorldTimerManager().ClearTimer(TimerHandle_ResetOrientation);
+	GetWorldTimerManager().SetTimer(TimerHandle_ResetOrientation, this, &AAIGuard::ResetGuardRotation, 3.f);
+}
+
+void AAIGuard::ResetGuardRotation()
+{
+	SetActorRotation(OriginRotation);
 }
 

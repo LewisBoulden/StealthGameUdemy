@@ -53,13 +53,14 @@ void AExtractionZone::HandleExtractionOverlap(UPrimitiveComponent* OverlappedCom
 
 	if (OverlappingPlayer->bIsHoldingObjective)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Extraction Zone was overlapped"));
+		UE_LOG(LogTemp, Log, TEXT("Succesfully Extracted Item"));
 
 		//This code will not work on a server/client setup
 		auto GameMode = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
 		if (GameMode != nullptr)
 		{
-			GameMode->CompleteMission(OverlappingPlayer);
+			const auto bWasSuccess = true;
+			GameMode->CompleteMission(OverlappingPlayer, GameCompletionState::Success);
 		}
 	}
 	else

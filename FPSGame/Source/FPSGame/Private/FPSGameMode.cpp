@@ -16,14 +16,12 @@ AFPSGameMode::AFPSGameMode()
 	HUDClass = AFPSHUD::StaticClass();
 }
 
-void AFPSGameMode::CompleteMission(APawn* InstigatorPawn)
+void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, const GameCompletionState state)
 {
 	if (InstigatorPawn == nullptr)
 	{
 		return;
 	}
-
-	UE_LOG(LogTemp, Log, TEXT("Succesfully Extracted Item"));
 
 	//This is not great as we are just assuming the first player controller is set but fine for now.
 	InstigatorPawn->DisableInput(GetWorld()->GetFirstPlayerController());
@@ -40,7 +38,7 @@ void AFPSGameMode::CompleteMission(APawn* InstigatorPawn)
 
 			if (ReturnedActors.Num() > 0)
 			{
-				auto NewViewTarget = ReturnedActors[0];
+				const auto NewViewTarget = ReturnedActors[0];
 				PlayerController->SetViewTargetWithBlend(NewViewTarget, 0.5f, EViewTargetBlendFunction::VTBlend_EaseIn, 0.2f);
 			}
 		}
@@ -50,5 +48,5 @@ void AFPSGameMode::CompleteMission(APawn* InstigatorPawn)
 		UE_LOG(LogTemp, Warning, TEXT("SpectatingViewpointClass is nullptr. Please update GameMode Blueprint with valid subclass. Cannot change spectating  view target."));
 	}
 
-	OnMissionCompleted(InstigatorPawn);
+	OnMissionCompleted(InstigatorPawn, state);
 }

@@ -6,6 +6,13 @@
 #include "GameFramework/GameModeBase.h"
 #include "FPSGameMode.generated.h"
 
+UENUM(BlueprintType, Category="GameState")
+enum class GameCompletionState : uint8
+{
+    Success,
+    Failed
+};
+
 UCLASS()
 class AFPSGameMode : public AGameModeBase
 {
@@ -15,15 +22,17 @@ public:
 
 	AFPSGameMode();
 
-	void CompleteMission(APawn* InstigatorPawn);
+	void CompleteMission(APawn* InstigatorPawn, const GameCompletionState state);
 
 	UFUNCTION(BlueprintImplementableEvent, Category="GameMode")
-	void OnMissionCompleted(APawn* InstigatorPawn);
+	void OnMissionCompleted(APawn* InstigatorPawn, const GameCompletionState state);
+	
 
 protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="Spectating")
 	TSubclassOf<AActor> SpectatingViewpointClass;
+
 };
 
 
