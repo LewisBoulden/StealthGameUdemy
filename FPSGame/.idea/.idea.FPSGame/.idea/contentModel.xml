@@ -43393,6 +43393,7 @@
       <e p=".gitignore" t="Include" />
       <e p="Config" t="Include">
         <e p="DefaultEditor.ini" t="Include" />
+        <e p="DefaultEditorPerProjectUserSettings.ini" t="Include" />
         <e p="DefaultEngine.ini" t="Include" />
         <e p="DefaultGame.ini" t="Include" />
         <e p="DefaultInput.ini" t="Include" />
@@ -43414,6 +43415,7 @@
           <e p="FPSGame.h" t="Include" />
           <e p="Private" t="Include">
             <e p="AIGuard.cpp" t="Include" />
+            <e p="AIGuardController.cpp" t="Include" />
             <e p="BlackHole.cpp" t="Include" />
             <e p="ExtractionZone.cpp" t="Include" />
             <e p="FPSCharacter.cpp" t="Include" />
@@ -43425,6 +43427,7 @@
           </e>
           <e p="Public" t="Include">
             <e p="AIGuard.h" t="Include" />
+            <e p="AIGuardController.h" t="Include" />
             <e p="BlackHole.h" t="Include" />
             <e p="ExtractionZone.h" t="Include" />
             <e p="FPSCharacter.h" t="Include" />

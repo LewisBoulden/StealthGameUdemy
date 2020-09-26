@@ -78,7 +78,9 @@ void AAIGuard::HandleHearNoise(APawn* PawnInstigator, const FVector& Location, f
 	}
 	
 	SetGuardState(EAIGuardState::Suspicious);
-	
+
+	PausePatrol();
+		
 	auto Direction = Location - GetActorLocation();
 	Direction.Normalize();
 	
@@ -115,5 +117,14 @@ void AAIGuard::SetGuardState(EAIGuardState NewState)
 	GuardState = NewState;
 
 	OnGuardStateChanged(GuardState);
+}
+
+void AAIGuard::PausePatrol() const
+{
+	auto MyAIController = Cast<AAIGuardController>(GetController());
+	if (MyAIController != nullptr)
+	{
+		MyAIController->PauseMove();
+	}
 }
 

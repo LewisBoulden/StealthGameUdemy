@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 
+
+#include "AIGuardController.h"
 #include "WidgetComponent.h"
 #include "GameFramework/Character.h"
 #include "Perception/PawnSensingComponent.h"
@@ -51,6 +53,8 @@ private:
 	void ResetGuardRotation();
 	
 	void SetGuardState(EAIGuardState NewState);
+
+	void PausePatrol() const;
 protected:
 	
 	UPROPERTY(VisibleAnywhere, Category="Components")
