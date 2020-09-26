@@ -3,12 +3,22 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "WidgetComponent.h"
 #include "GameFramework/Character.h"
 #include "Perception/PawnSensingComponent.h"
 
 #include "AIGuard.generated.h"
 
 class UPawnSensingComponent;
+
+UENUM(BlueprintType)
+enum class EAIGuardState : uint8
+{
+	Idle		UMETA(DisplayName = "Idle"),
+	Suspicious	UMETA(DisplayName = "Suspicious"),	
+	Alert		UMETA(DisplayName = "Alert"),
+};
 
 UCLASS()
 class FPSGAME_API AAIGuard : public ACharacter
@@ -21,6 +31,9 @@ public:
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintImplementableEvent, Category="AI | Guard")
+	void OnGuardStateChanged(EAIGuardState NewState);
 
 protected:
 	// Called when the game starts or when spawned
@@ -37,6 +50,7 @@ private:
 	UFUNCTION()
 	void ResetGuardRotation();
 	
+	void SetGuardState(EAIGuardState NewState);
 protected:
 	
 	UPROPERTY(VisibleAnywhere, Category="Components")
@@ -46,4 +60,6 @@ private:
 	FRotator OriginRotation;
 
 	FTimerHandle TimerHandle_ResetOrientation;
+
+	EAIGuardState GuardState;
 };

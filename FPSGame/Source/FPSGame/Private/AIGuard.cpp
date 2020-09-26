@@ -22,6 +22,7 @@ AAIGuard::AAIGuard()
 	GuardSensingComp->bSeePawns = true;
 	GuardSensingComp->bOnlySensePlayers = true;
 
+	GuardState = EAIGuardState::Idle;
 }
 
 // Called every frame
@@ -39,6 +40,8 @@ void AAIGuard::BeginPlay()
 	//The rotation to return to after the timer has expired
 	OriginRotation = GetActorRotation();
 
+	SetGuardState(EAIGuardState::Idle);
+	
 	//Bind up the sensing callbacks
 	GuardSensingComp->OnSeePawn.AddDynamic(this, &AAIGuard::HandleSeePlayer);
 	GuardSensingComp->OnHearNoise.AddDynamic(this, &AAIGuard::HandleHearNoise);
@@ -51,6 +54,8 @@ void AAIGuard::HandleSeePlayer(APawn* PawnInstigator)
 	{
 		return;
 	}
+
+	SetGuardState(EAIGuardState::Alert);
 
 	UE_LOG(LogActor, Warning, TEXT("AI Guard saw the %s"), *PawnInstigator->GetName());
 		
@@ -66,6 +71,14 @@ void AAIGuard::HandleSeePlayer(APawn* PawnInstigator)
 
 void AAIGuard::HandleHearNoise(APawn* PawnInstigator, const FVector& Location, float Volume)
 {
+	//Don't update the guard state if it's already alert
+	if (GuardState == EAIGuardState::Alert)
+	{
+		return;
+	}
+	
+	SetGuardState(EAIGuardState::Suspicious);
+	
 	auto Direction = Location - GetActorLocation();
 	Direction.Normalize();
 	
@@ -81,6 +94,26 @@ void AAIGuard::HandleHearNoise(APawn* PawnInstigator, const FVector& Location, f
 
 void AAIGuard::ResetGuardRotation()
 {
+	if (GuardState == EAIGuardState::Alert)
+	{
+		return;
+	}
+	
 	SetActorRotation(OriginRotation);
+
+	SetGuardState(EAIGuardState::Idle);
+}
+
+
+void AAIGuard::SetGuardState(EAIGuardState NewState)
+{
+	if (GuardState == NewState)
+	{
+		return;
+	}
+
+	GuardState = NewState;
+
+	OnGuardStateChanged(GuardState);
 }
 
