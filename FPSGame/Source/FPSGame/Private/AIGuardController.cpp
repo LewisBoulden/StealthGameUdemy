@@ -16,7 +16,7 @@ void AAIGuardController::BeginPlay()
 
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATargetPoint::StaticClass(), Waypoints);
 
-    GotToRandomWaypoint();
+    GoToRandomWaypoint();
 }
 
 void AAIGuardController::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
@@ -24,7 +24,7 @@ void AAIGuardController::OnMoveCompleted(FAIRequestID RequestID, const FPathFoll
     Super::OnMoveCompleted(RequestID, Result);
 
     GetWorldTimerManager().ClearTimer(TimerHandle_AIGuardWaitTimerHandle);
-    GetWorldTimerManager().SetTimer(TimerHandle_AIGuardWaitTimerHandle, this, &AAIGuardController::GotToRandomWaypoint, 3.f);
+    GetWorldTimerManager().SetTimer(TimerHandle_AIGuardWaitTimerHandle, this, &AAIGuardController::GoToRandomWaypoint, 3.f);
 }
 
 void AAIGuardController::PauseMove()
@@ -46,7 +46,7 @@ ATargetPoint* AAIGuardController::GetRandomWaypoint()
     return Cast<ATargetPoint>(Waypoints[Index]);
 }
 
-void AAIGuardController::GotToRandomWaypoint()
+void AAIGuardController::GoToRandomWaypoint()
 {
     const auto NextTargetWaypoint = GetRandomWaypoint();
     if (NextTargetWaypoint != nullptr)

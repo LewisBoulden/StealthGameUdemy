@@ -39,7 +39,7 @@ private:
     ATargetPoint* GetRandomWaypoint();
     
     UFUNCTION()
-    void GotToRandomWaypoint();
+    void GoToRandomWaypoint();
 
     FTimerHandle TimerHandle_AIGuardWaitTimerHandle;
 
