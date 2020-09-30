@@ -26,8 +26,12 @@ AFPSProjectile::AFPSProjectile()
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = true;
 
-	// Die after 3 seconds by default
-	InitialLifeSpan = 3.0f;
+	// Die after 20 seconds by default
+	InitialLifeSpan = 20.0f;
+
+	SetReplicates(true);
+	SetReplicateMovement(true);
+	
 }
 
 
@@ -40,10 +44,13 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 
 	}
 
-	const float Loudness = 1.f;
-	MakeNoise(Loudness, GetInstigator());
+	if (GetLocalRole() == ROLE_Authority)
+	{
+		const float Loudness = 1.f;
+		MakeNoise(Loudness, GetInstigator());
 	
-	Destroy();
+		Destroy();
+	}
 }
 
 void AFPSProjectile::BeginPlay()
