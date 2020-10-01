@@ -42996,6 +42996,7 @@
             <e p="ExtractionZone.cpp" t="Include" />
             <e p="FPSCharacter.cpp" t="Include" />
             <e p="FPSGameMode.cpp" t="Include" />
+            <e p="FPSGameState.cpp" t="Include" />
             <e p="FPSHUD.cpp" t="Include" />
             <e p="FPSObjectiveActor.cpp" t="Include" />
             <e p="FPSProjectile.cpp" t="Include" />
@@ -43008,6 +43009,7 @@
             <e p="ExtractionZone.h" t="Include" />
             <e p="FPSCharacter.h" t="Include" />
             <e p="FPSGameMode.h" t="Include" />
+            <e p="FPSGameState.h" t="Include" />
             <e p="FPSHUD.h" t="Include" />
             <e p="FPSObjectiveActor.h" t="Include" />
             <e p="FPSProjectile.h" t="Include" />

@@ -3,6 +3,7 @@
 #include "FPSGameMode.h"
 #include "FPSHUD.h"
 #include "FPSCharacter.h"
+#include "FPSGameState.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -14,17 +15,17 @@ AFPSGameMode::AFPSGameMode()
 
 	// use our custom HUD class
 	HUDClass = AFPSHUD::StaticClass();
+
+	// use the custom GameState class
+	GameStateClass = AFPSGameState::StaticClass();
 }
 
-void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, const GameCompletionState state)
+void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, const GameCompletionState State)
 {
 	if (InstigatorPawn == nullptr)
 	{
 		return;
 	}
-
-	//This is not great as we are just assuming the first player controller is set but fine for now.
-	InstigatorPawn->DisableInput(GetWorld()->GetFirstPlayerController());
 
 	//If the spectator viewport was set then we change the viewport to the spectator camera view
 	if (SpectatingViewpointClass != nullptr)
@@ -48,5 +49,14 @@ void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, const GameCompletionSt
 		UE_LOG(LogTemp, Warning, TEXT("SpectatingViewpointClass is nullptr. Please update GameMode Blueprint with valid subclass. Cannot change spectating  view target."));
 	}
 
-	OnMissionCompleted(InstigatorPawn, state);
+	//This is not great as we are just assuming the first player controller is set but fine for now.
+	//InstigatorPawn->DisableInput(GetWorld()->GetFirstPlayerController());
+	auto TheGameState = GetGameState<AFPSGameState>();
+	if (TheGameState != nullptr)
+	{
+		TheGameState->MulticastOnMissionComplete(InstigatorPawn, State);	
+	}
+	
+
+	OnMissionCompleted(InstigatorPawn, State);
 }

@@ -22,10 +22,10 @@ public:
 
 	AFPSGameMode();
 
-	void CompleteMission(APawn* InstigatorPawn, const GameCompletionState state);
+	void CompleteMission(APawn* InstigatorPawn, const GameCompletionState State);
 
 	UFUNCTION(BlueprintImplementableEvent, Category="GameMode")
-	void OnMissionCompleted(APawn* InstigatorPawn, const GameCompletionState state);
+	void OnMissionCompleted(APawn* InstigatorPawn, const GameCompletionState State);
 	
 
 protected:
