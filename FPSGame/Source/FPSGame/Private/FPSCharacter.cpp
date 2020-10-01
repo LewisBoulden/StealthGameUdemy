@@ -2,6 +2,7 @@
 
 #include "FPSCharacter.h"
 #include "FPSProjectile.h"
+#include "UnrealNetwork.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -43,11 +44,11 @@ void AFPSCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//Don't run this if we are the server
+	// don't run this if we are the server
 	if (!IsLocallyControlled())
 	{
 		auto RelativeRotation = CameraComponent->GetRelativeRotation();
-		//decompress from uint8
+		// decompress from uint8
 		RelativeRotation.Pitch = RemoteViewPitch * 360.0f / 255.0f;
 		CameraComponent->SetRelativeRotation(RelativeRotation);	
 	}
@@ -72,7 +73,7 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 void AFPSCharacter::Fire()
 {
-	//If we are a client we want to request to have a fire performed on the server.
+	// if we are a client we want to request to have a fire performed on the server.
 	ServerFire();
 	
 	// try and play the sound if specified
@@ -84,7 +85,7 @@ void AFPSCharacter::Fire()
 	// try and play a firing animation if specified
 	if (FireAnimation)
 	{
-		// Get the animation object for the arms mesh
+		// get the animation object for the arms mesh
 		UAnimInstance* AnimInstance = Mesh1PComponent->GetAnimInstance();
 		if (AnimInstance)
 		{
@@ -101,7 +102,7 @@ void AFPSCharacter::ServerFire_Implementation()
 		const FVector MuzzleLocation = GunMeshComponent->GetSocketLocation("Muzzle");
 		const FRotator MuzzleRotation = GunMeshComponent->GetSocketRotation("Muzzle");
 
-		//Set Spawn Collision Handling Override
+		// set Spawn Collision Handling Override
 		FActorSpawnParameters ActorSpawnParams;
 		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 		ActorSpawnParams.Instigator = this;
@@ -113,7 +114,7 @@ void AFPSCharacter::ServerFire_Implementation()
 
 bool AFPSCharacter::ServerFire_Validate()
 {
-	//Set to return true for now till we want to actually perform some validation
+	//set to return true for now till we want to actually perform some validation
 	return true;
 }
 
@@ -135,4 +136,15 @@ void AFPSCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(GetActorRightVector(), Value);
 	}
+}
+
+// Replicate methods
+void AFPSCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps( OutLifetimeProps );
+
+	DOREPLIFETIME(AFPSCharacter, bIsHoldingObjective);
+
+	// note: reference: this can setup conditional replication to reduce broadcasting and bandwidth as needed.
+	//DOREPLIFETIME_CONDITION(AFPSCharacter, bIsHoldingObjective, COND_OwnerOnly);
 }

@@ -66,7 +66,7 @@ public:
     UAnimSequence* FireAnimation;
     
     /** Flag for if the player is holding the objective Actor */
-    UPROPERTY(BlueprintReadOnly, Category = "Gameplay")
+    UPROPERTY(Replicated, BlueprintReadOnly, Category = "Gameplay")
     bool bIsHoldingObjective;
 
 protected:

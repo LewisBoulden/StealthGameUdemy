@@ -59,7 +59,6 @@ void AExtractionZone::HandleExtractionOverlap(UPrimitiveComponent* OverlappedCom
 		auto GameMode = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
 		if (GameMode != nullptr)
 		{
-			const auto bWasSuccess = true;
 			GameMode->CompleteMission(OverlappingPlayer, GameCompletionState::Success);
 		}
 	}

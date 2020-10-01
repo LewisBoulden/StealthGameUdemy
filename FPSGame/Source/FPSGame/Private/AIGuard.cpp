@@ -134,6 +134,7 @@ void AAIGuard::PausePatrol() const
 	}
 }
 
+// Replicate methods
 void AAIGuard::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps( OutLifetimeProps );
