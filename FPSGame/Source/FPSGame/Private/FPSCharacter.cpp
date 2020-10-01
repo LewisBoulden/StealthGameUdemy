@@ -14,7 +14,7 @@ AFPSCharacter::AFPSCharacter() :
 {
 
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false; //disabled but keeping code in case the need arises again to need to use BP to debug
+	PrimaryActorTick.bCanEverTick = true;
 	
 	// Create a CameraComponent	
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
@@ -41,7 +41,16 @@ AFPSCharacter::AFPSCharacter() :
 
 void AFPSCharacter::Tick(float DeltaTime)
 {
-		Super::Tick(DeltaTime);
+	Super::Tick(DeltaTime);
+
+	//Don't run this if we are the server
+	if (!IsLocallyControlled())
+	{
+		auto RelativeRotation = CameraComponent->GetRelativeRotation();
+		//decompress from uint8
+		RelativeRotation.Pitch = RemoteViewPitch * 360.0f / 255.0f;
+		CameraComponent->SetRelativeRotation(RelativeRotation);	
+	}
 }
 
 

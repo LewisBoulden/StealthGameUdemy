@@ -8,6 +8,7 @@
 #include "Perception/PawnSensingComponent.h"
 #include "DrawDebugHelpers.h"
 #include "FPSGameMode.h"
+#include "UnrealNetwork.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 
@@ -23,6 +24,8 @@ AAIGuard::AAIGuard()
 	GuardSensingComp->bOnlySensePlayers = true;
 
 	GuardState = EAIGuardState::Idle;
+
+	SetReplicates(true);
 }
 
 // Called every frame
@@ -106,6 +109,10 @@ void AAIGuard::ResetGuardRotation()
 	SetGuardState(EAIGuardState::Idle);
 }
 
+void AAIGuard::OnRep_AIGuardState()
+{
+	OnGuardStateChanged(GuardState);
+}
 
 void AAIGuard::SetGuardState(EAIGuardState NewState)
 {
@@ -115,8 +122,7 @@ void AAIGuard::SetGuardState(EAIGuardState NewState)
 	}
 
 	GuardState = NewState;
-
-	OnGuardStateChanged(GuardState);
+	OnRep_AIGuardState();
 }
 
 void AAIGuard::PausePatrol() const
@@ -126,5 +132,12 @@ void AAIGuard::PausePatrol() const
 	{
 		MyAIController->PauseMove();
 	}
+}
+
+void AAIGuard::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps( OutLifetimeProps );
+
+	DOREPLIFETIME(AAIGuard, GuardState);
 }
 

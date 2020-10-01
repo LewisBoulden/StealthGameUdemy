@@ -41,8 +41,6 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-private:
-
 	UFUNCTION()
 	void HandleSeePlayer(APawn* PawnInstigator);
 	
@@ -51,10 +49,14 @@ private:
 
 	UFUNCTION()
 	void ResetGuardRotation();
+
+	UFUNCTION()
+	void OnRep_AIGuardState();
 	
 	void SetGuardState(EAIGuardState NewState);
 
 	void PausePatrol() const;
+	
 protected:
 	
 	UPROPERTY(VisibleAnywhere, Category="Components")
@@ -65,5 +67,6 @@ private:
 
 	FTimerHandle TimerHandle_ResetOrientation;
 
+	UPROPERTY(ReplicatedUsing=OnRep_AIGuardState)
 	EAIGuardState GuardState;
 };
