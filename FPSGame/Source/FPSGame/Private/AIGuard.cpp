@@ -68,7 +68,7 @@ void AAIGuard::HandleSeePlayer(APawn* PawnInstigator)
 	auto GameMode = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
 	if (GameMode != nullptr)
 	{
-		GameMode->CompleteMission(PawnInstigator, GameCompletionState::Failed);	
+		GameMode->CompleteMission(PawnInstigator, EGameCompletionState::Failed);	
 	}
 }
 

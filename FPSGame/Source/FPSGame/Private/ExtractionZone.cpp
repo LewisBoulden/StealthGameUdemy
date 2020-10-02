@@ -30,7 +30,7 @@ AExtractionZone::AExtractionZone()
 	ExtractionDecalComp = CreateDefaultSubobject<UDecalComponent>(TEXT("ExtractionDecalComp"));
 	ExtractionDecalComp->DecalSize = OverlapComp->GetScaledBoxExtent();
 	ExtractionDecalComp->SetupAttachment(OverlapComp);
-}
+} 
 
 
 // Called when the game starts or when spawned
@@ -59,7 +59,7 @@ void AExtractionZone::HandleExtractionOverlap(UPrimitiveComponent* OverlappedCom
 		auto GameMode = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
 		if (GameMode != nullptr)
 		{
-			GameMode->CompleteMission(OverlappingPlayer, GameCompletionState::Success);
+			GameMode->CompleteMission(OverlappingPlayer, EGameCompletionState::Success);
 		}
 	}
 	else

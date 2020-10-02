@@ -20,7 +20,7 @@ AFPSGameMode::AFPSGameMode()
 	GameStateClass = AFPSGameState::StaticClass();
 }
 
-void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, const GameCompletionState State)
+void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, const EGameCompletionState State)
 {
 	if (InstigatorPawn == nullptr)
 	{

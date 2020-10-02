@@ -7,7 +7,7 @@
 #include "FPSGameMode.generated.h"
 
 UENUM(BlueprintType, Category="GameState")
-enum class GameCompletionState : uint8
+enum class EGameCompletionState : uint8
 {
     Success,
     Failed
@@ -22,10 +22,10 @@ public:
 
 	AFPSGameMode();
 
-	void CompleteMission(APawn* InstigatorPawn, const GameCompletionState State);
+	void CompleteMission(APawn* InstigatorPawn, const EGameCompletionState State);
 
 	UFUNCTION(BlueprintImplementableEvent, Category="GameMode")
-	void OnMissionCompleted(APawn* InstigatorPawn, const GameCompletionState State);
+	void OnMissionCompleted(APawn* InstigatorPawn, const EGameCompletionState State);
 	
 
 protected:
