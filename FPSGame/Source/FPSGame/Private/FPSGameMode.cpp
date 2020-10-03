@@ -30,17 +30,20 @@ void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, const EGameCompletionS
 	//If the spectator viewport was set then we change the viewport to the spectator camera view
 	if (SpectatingViewpointClass != nullptr)
 	{
-		auto PlayerController = Cast<APlayerController>(InstigatorPawn->GetController());
-		if (PlayerController != nullptr)
+		TArray<AActor*> ReturnedActors;
+		UGameplayStatics::GetAllActorsOfClass(this, SpectatingViewpointClass, ReturnedActors);
+	
+		if (ReturnedActors.Num() > 0)
 		{
-			//TODO jth: all this is totally hackey as it's making assumptions about the actor we want being the first instance
-			TArray<AActor*> ReturnedActors;
-			UGameplayStatics::GetAllActorsOfClass(this, SpectatingViewpointClass, ReturnedActors);
-
-			if (ReturnedActors.Num() > 0)
+			// todo: this is a hack to get the camera but seems like there should be a better way then just assuming we want the first in the list.
+			const auto NewViewTarget = ReturnedActors[0];
+			for (FConstPlayerControllerIterator Iter = GetWorld()->GetPlayerControllerIterator(); Iter; ++Iter)
 			{
-				const auto NewViewTarget = ReturnedActors[0];
-				PlayerController->SetViewTargetWithBlend(NewViewTarget, 0.5f, EViewTargetBlendFunction::VTBlend_EaseIn, 0.2f);
+				auto PlayerController = Cast<APlayerController>(Iter->Get());
+				if (PlayerController != nullptr)
+				{
+					PlayerController->SetViewTargetWithBlend(NewViewTarget, 0.5f, EViewTargetBlendFunction::VTBlend_EaseIn, 0.2f);
+				}
 			}
 		}
 	}
@@ -49,14 +52,11 @@ void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, const EGameCompletionS
 		UE_LOG(LogTemp, Warning, TEXT("SpectatingViewpointClass is nullptr. Please update GameMode Blueprint with valid subclass. Cannot change spectating  view target."));
 	}
 
-	//This is not great as we are just assuming the first player controller is set but fine for now.
-	//InstigatorPawn->DisableInput(GetWorld()->GetFirstPlayerController());
 	auto TheGameState = GetGameState<AFPSGameState>();
 	if (TheGameState != nullptr)
 	{
 		TheGameState->MulticastOnMissionComplete(InstigatorPawn, State);	
 	}
-	
 
 	OnMissionCompleted(InstigatorPawn, State);
 }

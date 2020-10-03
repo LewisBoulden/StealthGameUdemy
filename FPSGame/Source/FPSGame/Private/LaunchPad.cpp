@@ -67,9 +67,6 @@ void ALaunchPad::HandleLaunchOverlappingActor(UPrimitiveComponent* OverlappedCom
 	
 	if (OtherActor != nullptr)
 	{
-		//do the work here to launch the player and the blue boxes.
-		//todo jth: fix the projectile that's no longer launching.
-
         auto OverlappingPlayer = Cast<AFPSCharacter>(OtherActor);
         if (OverlappingPlayer == nullptr)
         {

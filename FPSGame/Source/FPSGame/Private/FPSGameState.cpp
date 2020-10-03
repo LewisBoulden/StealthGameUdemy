@@ -6,15 +6,26 @@
 
 #include "EngineUtils.h"
 #include "FPSCharacter.h"
+#include "FPSPlayerController.h"
+#include "Engine/World.h"
 
-void AFPSGameState::MulticastOnMissionComplete_Implementation(AActor* InstigatorPawn, const EGameCompletionState State)
+void AFPSGameState::MulticastOnMissionComplete_Implementation(APawn* InstigatorPawn, const EGameCompletionState State)
 {
-    // don't use GetPawnIterator as it's deprecated for 4.26
-    for (auto Character : TActorRange<AFPSCharacter>(GetWorld()))
+    // using C++11 style ranged loop doesn't seem to be supported for this FConstPlayerControllerIterator type
+    for (FConstPlayerControllerIterator Iter = GetWorld()->GetPlayerControllerIterator(); Iter; ++Iter)
     {
-        if (Character->IsLocallyControlled())
+        auto FPSPlayerController = Cast<AFPSPlayerController>(Iter->Get());
+        if (FPSPlayerController != nullptr && FPSPlayerController->IsLocalController())
         {
-            Character->DisableInput(nullptr);
+            // disable all player controlled pawn input if the game is completed
+            auto PlayerPawn = FPSPlayerController->GetPawn();
+            if (PlayerPawn != nullptr && PlayerPawn->IsLocallyControlled())
+            {
+                PlayerPawn->DisableInput(nullptr);
+            }
+
+            // complete the mission
+            FPSPlayerController->OnMissionCompleted(InstigatorPawn, State);
         }
     }
 }

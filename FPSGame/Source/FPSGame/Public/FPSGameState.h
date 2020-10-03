@@ -17,5 +17,5 @@ class FPSGAME_API AFPSGameState : public AGameStateBase
 	GENERATED_BODY()
 public:
 	UFUNCTION(NetMulticast, Reliable)
-	void MulticastOnMissionComplete(AActor* InstigatorPawn, const EGameCompletionState State);	
+	void MulticastOnMissionComplete(APawn* InstigatorPawn, const EGameCompletionState State);	
 };
